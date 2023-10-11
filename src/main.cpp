@@ -1,8 +1,12 @@
-#include "engine.h"
+#include "engine_window.h"
+#include <iostream>
 
 int main() {
-    Engine* engine = new Engine();
+    EngineWindow engineWindow {640, 400, "VulkanEngine"};
 
-    delete engine;
+    while (!engineWindow.shouldClose()) {
+	    glfwPollEvents();
+    }
+
     return 0;
 }
