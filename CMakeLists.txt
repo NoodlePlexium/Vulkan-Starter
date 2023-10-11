@@ -6,7 +6,7 @@ project(Engine)
 add_subdirectory(libs)
 find_package(Vulkan REQUIRED)
 
-set( SOURCE_FILE src/main.cpp)
+set(SOURCE_FILE src/main.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILE})
 target_include_directories(${PROJECT_NAME} PUBLIC ./include)
