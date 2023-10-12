@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <stdexcept>
 #include <string>
+#include <iostream>
 
 class EngineWindow {
 
@@ -31,7 +32,7 @@ public:
 		}
 	}
 
-    VkExtent2D getExtent() {return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)};}
+    VkExtent2D getExtent() {std::cout << "printing" <<std::endl; return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)};}
 
 	bool wasWindowResized() {return framebufferResized;}
 	void resetWindowResizedFlag() {framebufferResized = false;}

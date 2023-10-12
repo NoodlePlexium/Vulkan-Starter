@@ -1,12 +1,9 @@
-#include "engine_window.h"
-#include <iostream>
+#include "app.h"
 
 int main() {
-    EngineWindow engineWindow {640, 400, "VulkanEngine"};
-
-    while (!engineWindow.shouldClose()) {
-	    glfwPollEvents();
-    }
+    
+    Engine::Application app{};
+    app.run();
 
     return 0;
 }
