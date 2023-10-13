@@ -35,9 +35,9 @@ public:
         }
         swapChainImageViews.clear();
 
-        if (swapChain != VK_NULL_HANDLE) {
+        if (swapChain != nullptr) {
             vkDestroySwapchainKHR(device.device(), swapChain, nullptr);
-            swapChain = VK_NULL_HANDLE;
+            swapChain = nullptr;
         }
 
         for (int i = 0; i < depthImages.size(); i++) {
@@ -81,6 +81,7 @@ public:
             VK_IMAGE_TILING_OPTIMAL,
             VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT);
     }
+
     VkResult acquireNextImage(uint32_t *imageIndex){
         vkWaitForFences(
             device.device(),
@@ -145,6 +146,7 @@ public:
 
         return result;
     }
+
     bool compareSwapFormats(const EngineSwapChain &swapChain) const {
         return 
             swapChain.swapChainDepthFormat == swapChainDepthFormat && 
@@ -242,7 +244,6 @@ private:
             }
         }
     }
-    
     void createDepthResources(){
         VkFormat depthFormat = findDepthFormat();
         swapChainDepthFormat = depthFormat;
@@ -291,7 +292,6 @@ private:
             }
         }
     }
-    
     void createRenderPass(){
         VkAttachmentDescription depthAttachment{};
         depthAttachment.format = findDepthFormat();
@@ -349,7 +349,6 @@ private:
             throw std::runtime_error("failed to create render pass!");
         }
     }
-    
     void createFramebuffers(){
         swapChainFramebuffers.resize(imageCount());
         for (size_t i = 0; i < imageCount(); i++) {
@@ -370,7 +369,6 @@ private:
             }
         }
     }
-    
     void createSyncObjects(){
         imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         renderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
@@ -406,6 +404,14 @@ private:
     }
     VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes){
         
+        // Mailbox
+        // for (const auto &availablePresentMode : availablePresentModes) {
+        //     if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
+        //         std::cout << "Present mode: Mailbox" << std::endl;
+        //         return availablePresentMode;
+        //     }
+        // }
+
         // Check if adaptive sync is available
         for (const auto &availablePresentMode : availablePresentModes) {
             if (availablePresentMode == VK_PRESENT_MODE_FIFO_RELAXED_KHR) {
@@ -415,10 +421,10 @@ private:
         }
 
         // for (const auto &availablePresentMode : availablePresentModes) {
-        //     if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
-        //         std::cout << "Present mode: Mailbox" << std::endl;
-        //         return availablePresentMode;
-        //     }
+        //   if (availablePresentMode == VK_PRESENT_MODE_IMMEDIATE_KHR) {
+        //     std::cout << "Present mode: Immediate" << std::endl;
+        //     return availablePresentMode;
+        //   }
         // }
 
         std::cout << "Present mode: V-Sync" << std::endl;
@@ -466,6 +472,7 @@ private:
     std::vector<VkFence> imagesInFlight;
     size_t currentFrame = 0;
 };
+
 }  // namespace 
 
 

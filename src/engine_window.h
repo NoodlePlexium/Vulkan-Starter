@@ -22,7 +22,7 @@ public:
     }
 
 	EngineWindow(const EngineWindow &) = delete;
-	EngineWindow &operator=(const EngineWindow &) = delete;
+	EngineWindow &operator = (const EngineWindow &) = delete;
 
     bool shouldClose() {return glfwWindowShouldClose(window);}
 
@@ -32,7 +32,7 @@ public:
 		}
 	}
 
-    VkExtent2D getExtent() {std::cout << "printing" <<std::endl; return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)};}
+    VkExtent2D getExtent() {return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)};}
 
 	bool wasWindowResized() {return framebufferResized;}
 	void resetWindowResizedFlag() {framebufferResized = false;}

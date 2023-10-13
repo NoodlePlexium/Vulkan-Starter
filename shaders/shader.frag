@@ -8,8 +8,11 @@ layout (location = 0) out vec4 outColour;
 
 
 layout(set = 0, binding = 0) uniform GlobalUbo {
-    mat4 projectionViewMatrix;
-    vec3 directionToLight;
+    mat4 projectionView;
+    vec4 ambientLightColour;
+	vec3 lightPosition;
+	vec4 lightColour;
+    mat4 view;
 } ubo;
 
 layout(push_constant) uniform Push {
@@ -17,10 +20,14 @@ layout(push_constant) uniform Push {
     mat4 normalMatrix;
 } push;
 
-const float AMBIENT = 0.1;
-const vec3 SKY_COLOR = vec3(0.69, 0.84, 0.89); // Blue sky color
 
 void main() {
-    float lightIntensity = max(dot(fragNormalWorld, ubo.directionToLight), 0);
-	outColour = vec4(lightIntensity * fragColour +  AMBIENT * SKY_COLOR, 1.0);
+    vec3 directionToLight = ubo.lightPosition - fragPositionWorld;
+    float attenuation = 1.0 / dot(directionToLight, directionToLight);
+
+    vec3 lightColour = ubo.lightColour.xyz * ubo.lightColour.w;
+    vec3 ambientLight = ubo.ambientLightColour.xyz * ubo.ambientLightColour.w;
+    vec3 diffuseLight = lightColour * max(dot(normalize(fragNormalWorld), normalize(directionToLight)), 0);
+
+	outColour = vec4((diffuseLight + ambientLight) * fragColour, 1.0);
 }
